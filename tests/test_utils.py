@@ -20,6 +20,7 @@ from contextlib import contextmanager
 import os
 import shutil
 from subprocess import CalledProcessError
+import tarfile
 import tempfile
 import unittest
 import yaml
@@ -284,6 +285,15 @@ class TestGetReleaseFilePath(unittest.TestCase):
         with self.mock_releases_dir():
             path = get_release_file_path('1.42.47')
         self.assertIsNone(path)
+
+    def test_juju_gui_from_resource(self):
+        tmptar = tempfile.NamedTemporaryFile()
+        tmpf = tempfile.NamedTemporaryFile()
+        with tarfile.open(tmptar, 'w:bz2') as tf:
+            tf.add(tmpf)
+        with mock.patch('utils.run'):
+            path = get_release_file_path()
+        self.assert_equal(tmpf, path)
 
 
 def make_collection(attr, values):

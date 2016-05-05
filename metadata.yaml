@@ -27,3 +27,10 @@ provides:
   nrpe-external-master:
     interface: nrpe-external-master
     scope: container
+series: ["trusty"]
+resources:
+    juju-gui:
+        name: juju-gui
+        type: file
+        filename: juju-gui.tar.bz2
+        description: the juju-gui tarball

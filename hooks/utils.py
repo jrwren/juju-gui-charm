@@ -23,6 +23,7 @@ import logging
 import re
 import shutil
 from subprocess import CalledProcessError
+import tarfile
 import time
 import urlparse
 import yaml
@@ -399,6 +400,9 @@ def get_release_file_path(version=None):
     If version is None, return the path of the last release.
     Raise a ValueError if no releases are found in the local repository.
     """
+    rf = run("resource-get", "juju-gui")
+    if tarfile.is_tarfile(rf):
+        return rf
     version_path_map = {}
     # Collect the locally stored releases.
     for filename in os.listdir(RELEASES_DIR):
